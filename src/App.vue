@@ -1,136 +1,207 @@
 <template>
-  <div >
-    <!-- Navbar -->
-    <nav class="p-10">
-      <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-dark text-xl font">russ<span>.</span></h1>
-        <ul class="flex space-x-6 text-dark">
-          <li><a href="#home" class="hover:text-dark-400">Home</a></li>
-          <li><a href="#features" class="hover:text-dark-400">Features</a></li>
-          <li><a href="#contact" class="hover:text-dark-400">Contact</a></li>
+  <div id="app">
+    <div class="calculator">
+
+      <div class="historyBtn">
+        <button @click="toggleHistory">history</button>
+      </div>
+      
+      <div class="display">
+        <input v-model="displayValue" disabled/>
+      </div>
+
+      <div class="buttons">
+        <button @click="appendNumber(1)">1</button>
+        <button @click="appendNumber(2)">2</button>
+        <button @click="appendNumber(3)">3</button>
+        <button class="operator" @click="eraseLastCharacter">DEL</button>
+        <button @click="appendNumber(4)">4</button>
+        <button @click="appendNumber(5)">5</button>
+        <button @click="appendNumber(6)">6</button>
+        <button class="operator" @click="appendOperator('-')">-</button>
+        <button @click="appendNumber(7)">7</button>
+        <button @click="appendNumber(8)">8</button>
+        <button @click="appendNumber(9)">9</button>
+        <button class="operator" @click="appendOperator('+')">+</button>
+        <button @click="appendNumber(0)">0</button>
+        <button class="operator" @click="appendOperator('.')"><span>.</span></button>
+        <button class="operator" @click="appendOperator('*')">*</button>
+        <button class="operator" @click="appendOperator('/')">/</button>
+        <button class="operator" @click="clearDisplay">RESET</button>
+        <button class="operator" @click="calculateResult">=</button>
+      </div>
+    </div>
+    <div class="history" v-if="showHistory">
+      <h6>recent answers:</h6>
+        <ul>
+          <li v-for="(item, index) in history" :key="index"> {{ item }}</li>
         </ul>
       </div>
-    </nav>
-
-    <section id="home" class="bg-[#fff]  h-screen flex items-center justify-center">
-      <div class="text-center intro">
-        <h2 class="text-5xl font-bold">Welcome to Our Website</h2>
-        <p class="text-lg mb-6">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente tenetur necessitatibus expedita voluptates, ab molestiae incidunt, dolore ullam neque aliquid possimus porro harum sint corporis at! Maxime doloremque non velit.</p>
-        <button class="bg-yellow-500 text-black px-6 py-3 rounded-lg hover:bg-yellow-400 transition duration-300">Get Started</button>
-      </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-16">
-      <div class="container mx-auto text-center">
-        <h3 class="text-4xl font-semibold mb-8">Our Features</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div class="bg-white p-6 rounded-lg shadow-lg">
-    <!-- 3D Image Effect -->
-    <img
-      src="./assets/settings.png"
-      alt="Feature Image"
-      class="transition-transform transform hover:scale-105 hover:rotate-3d hover:shadow-xl rounded-lg"
-    />
-    <h4 class="text-xl font-semibold mb-4">Feature 1</h4>
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit consequatur rerum unde porro, officiis beatae libero nihil quod ad possimus et nobis eum voluptatem iusto in ipsam saepe inventore dicta.</p>
   </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg">
-            <img src="./assets/settings.png">
-            <h4 class="text-xl font-semibold mb-4">Feature 2</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora assumenda accusamus doloribus aspernatur aliquid optio ea mollitia, vitae maiores sed voluptates dolorum, voluptatem similique praesentium debitis sunt expedita excepturi autem.</p>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg">
-            <img src="./assets/settings.png">
-            <h4 class="text-xl font-semibold mb-4">Feature 3</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam, deserunt quos quae omnis molestias a ipsam doloremque officiis doloribus quisquam cupiditate assumenda culpa optio, voluptatibus incidunt nisi deleniti. Tempore, obcaecati!</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-
-    <section id="about" class=""> 
-      <div class="flex text-center aboutText">
-        <div class="basis-2/3">
-          <h1>Lorem</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo voluptatum, ratione fuga corrupti incidunt iure pariatur enim repellendus perferendis dolores, aliquid animi quae in reprehenderit aliquam nisi, minima distinctio qui!</p>
-        </div>
-        <div class="basis-1/3">
-          <img src="">
-        </div>
-      </div>
-
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 text-dark">
-      <div class="container mx-auto text-center">
-        <h3 class="text-4xl font-semibold mb-8">Contact Us</h3>
-        <p class="text-lg mb-6">Have any questions? We're here to help. Get in touch with us!</p>
-        <button class="bg-yellow-500 text-black px-6 py-3 rounded-lg hover:bg-yellow-400 transition duration-300">Contact</button>
-      </div>
-    </section>
-    
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4 text-center">
-      <p>&copy; 2025 russ. All rights reserved.</p>
-    </footer>
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
-}
+  data() {
+    return {
+      displayValue: "",
+      history: [],  
+      showHistory: false,
+    };
+  },
+
+  methods: {
+    appendNumber(number) {
+      this.displayValue += number;
+    },
+
+    clearDisplay() {
+      this.displayValue = "";
+    },
+
+    appendOperator(operator) {
+      if (this.displayValue && !/[+\-/*]$/.test(this.displayValue)) {
+        this.displayValue += operator;
+      }
+    },
+
+    eraseLastCharacter() {
+      this.displayValue = this.displayValue.slice(0, -1);
+    },
+
+    toggleHistory() {
+      this.showHistory = !this.showHistory;
+    },
+
+    
+    calculateResult() {
+      try {
+        const result = eval(this.displayValue);
+        this.displayValue = result.toString();
+
+        if (!isNaN(result) && result > 9999) {
+          this.displayValue = result.toLocaleString();
+        }
+
+        this.history.push(`${this.displayValue}`);
+
+        if (this.history.length > 5) {
+          this.history.shift();
+        }
+      } catch (e) {
+        this.displayValue = "error";
+      }
+    },
+  },
+};
 </script>
 
+
 <style scoped>
-
-nav {
-  -webkit-box-shadow: 0px 5px 76px 4px rgba(189,189,189,1);
--moz-box-shadow: 0px 5px 76px 4px rgba(189,189,189,1);
-box-shadow: 0px 5px 76px 4px rgba(189,189,189,1);
+#app {
+  font-family: "Crimson Text", serif;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #4C585B;
+  
 }
 
-ul li a{
-  margin: 20px;
+.calculator {
+  display: inline-block;
+  border: 2px solid #4C585B;
+  padding: 30px;
+  border-radius: 10px;
+  margin-right:20px;
+  background-color: #4C585B;
+  -webkit-box-shadow: -5px 0px 42px 0px rgba(156,156,156,1);
+  -moz-box-shadow: -5px 0px 42px 0px rgba(156,156,156,1);
+  box-shadow: -5px 0px 42px 0px rgba(156,156,156,1);
 }
 
-.font {
+.display input {
+  width: 400px;
+  height: 70px;
   font-weight: bolder;
+  font-size: 2em;
+  text-align: right;
+  margin-bottom: 20px;
+  padding-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #4C585B;
+  background-color: #f7f7f7;
 }
-.intro h2 {
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  background: #f7f7f7;
+  padding: 15px 15px;
+  border-radius: 5px;
+  background-color: #7E99A3;
+}
+
+button {
+  font-size: 1.1em;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  color: black;
+  background-color: #f7f7f7;
+  transition: 0.1s ease-in-out;
+}
+
+
+button:hover {
+  background-color: #4C585B;
+  color: #fff;
+}
+
+.operator {
+  background-color: #A5BFCC;
+  color: black;
+}
+.history {
+  text-align: start;
+  padding: 40px;
+  min-width: 200px;
+  height: 60%;
+}
+
+.history h6 {
+  font-size: 20px;
   font-weight: bold;
-}
-.intro p{
-  margin-top: 10px;
+  color: #fff;
 }
 
-.intro button{
-  margin-top: 20px;
-}
-img {
-  width: 500px;
+.history li {
+  font-size: 25px;
+  color: #fff;
 }
 
-img:hover {
-  transform: perspective(600px) rotateY(10deg) rotateX(10deg);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
+.historyBtn {
+  text-align: start;
+  margin-bottom: 20px;
 }
 
-.aboutText h1 {
-  font-size: 40px;
-  font-weight: bold;
-}
-.aboutText p {
-  font-size: 18px;
+.historyBtn button {
+  background-color: #A5BFCC;
+  border: none;
+  padding: 8px 16px;
+  color: #000;
+  font-size: 15px;
+  text-transform: lowercase;
+  letter-spacing: 1px;
 }
 
-#contact, #about {
-  margin-top: 200px;
+.historyBtn button:hover {
+  background-color: #7E99A3;
+  color: #000;
 }
 
 </style>

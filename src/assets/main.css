@@ -2,7 +2,5 @@
 @import "tailwindcss";
 
 #app {
-  font-family: "Roboto", serif;
-  margin-left: 200px;
-  margin-right: 200px;
+  font-family: "Crimson Text", serif;
 }
