@@ -1,36 +1,31 @@
 <template>
-  <div id="app">
-    <div class="calculator">
-
-      <div class="historyBtn">
-        <button @click="toggleHistory">history</button>
+  <div id="app" class="flex justify-center items-center h-screen  bg-gradient-to-l from-gray-400 to-gray-700">
+    <div class="bg-[#021526] w-100 p-10 border-1 border-[#0000] rounded-2xl shadow-[-3px_1px_55px_0px_rgba(255,_255,_255,_0.05)]">
+      <div class="mb-3">
+        <button type="button" @click="toggleHistory" class="text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">history</button>
       </div>
       
-      <div class="display">
-        <input v-model="displayValue" disabled/>
+      <div class="mb-5">
+        <input v-model="displayValue" type="text" id="first_name" class="text-end h-15 bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled />
       </div>
 
-      <div class="buttons">
-        <button @click="appendNumber(1)">1</button>
-        <button @click="appendNumber(2)">2</button>
-        <button @click="appendNumber(3)">3</button>
-        <button class="operator" @click="eraseLastCharacter">DEL</button>
-        <button @click="appendNumber(4)">4</button>
-        <button @click="appendNumber(5)">5</button>
-        <button @click="appendNumber(6)">6</button>
-        <button class="operator" @click="appendOperator('-')">-</button>
-        <button @click="appendNumber(7)">7</button>
-        <button @click="appendNumber(8)">8</button>
-        <button @click="appendNumber(9)">9</button>
-        <button class="operator" @click="appendOperator('+')">+</button>
-        <button @click="appendNumber(0)">0</button>
-        <button class="operator" @click="appendOperator('.')"><span>.</span></button>
-        <button class="operator" @click="appendOperator('*')">*</button>
-        <button class="operator" @click="appendOperator('/')">/</button>
-        <button class="operator" @click="clearDisplay">RESET</button>
-        <button class="operator" @click="calculateResult">=</button>
+      <div class="grid grid-cols-4 gap-2">
+        <button class="text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-900 font-medium rounded-full text-sm px-5 py-2.5 me-0.5 mb-1" v-for="(button, index) in buttons" :key="index" :class="button.class" @click="button.action">
+          <span v-if="typeof button.value === 'number'">{{ button.value }}</span>
+          <span v-else>
+             <i v-if="button.class === 'delete'" class="fa fa-backspace"></i>
+             <i v-if="button.class === 'minus'" class="fa-solid fa-minus"></i>
+             <i v-if="button.class === 'plus'" class="fa-solid fa-plus"></i>
+             <i v-if="button.class === 'divide'" class="fa-solid fa-divide"></i>
+             <i v-if="button.class === 'multiply'" class="fa-solid fa-xmark"></i>
+             <i v-if="button.class === 'result'" class="fa-solid fa-equals"></i>
+             <i v-if="button.class === 'clear'" class="fa-solid fa-c"></i>
+            <span v-else>{{ button.value }}</span>
+          </span>
+        </button>
       </div>
     </div>
+
     <div class="history" v-if="showHistory">
       <h6>recent answers:</h6>
         <ul>
@@ -38,7 +33,6 @@
         </ul>
       </div>
   </div>
-
 </template>
 
 <script>
@@ -48,6 +42,27 @@ export default {
       displayValue: "",
       history: [],  
       showHistory: false,
+
+      buttons: [
+        { value: 1, action: () => this.appendNumber(1) },
+        { value: 2, action: () => this.appendNumber(2) },
+        { value: 3, action: () => this.appendNumber(3) },
+        { value: '', class: 'delete', action: this.eraseLastCharacter },
+        { value: 4, action: () => this.appendNumber(4) },
+        { value: 5, action: () => this.appendNumber(5) },
+        { value: 6, action: () => this.appendNumber(6) },
+        { value: '', class: 'minus', action: () => this.appendOperator('-') },
+        { value: 7, action: () => this.appendNumber(7) },
+        { value: 8, action: () => this.appendNumber(8) },
+        { value: 9, action: () => this.appendNumber(9) },
+        { value: '', class: 'plus', action: () => this.appendOperator('+') },
+        { value: 0, action: () => this.appendNumber(0) },
+        { value: '.', class: '', action: () => this.appendOperator('.') },
+        { value: '', class: 'multiply', action: () => this.appendOperator('*') },
+        { value: '', class: 'divide', action: () => this.appendOperator('/') },
+        { value: '', class: 'clear', action: this.clearDisplay },
+        { value: '', class: 'result', action: this.calculateResult }
+      ]
     };
   },
 
@@ -100,108 +115,24 @@ export default {
 
 <style scoped>
 #app {
-  font-family: "Crimson Text", serif;
-  text-align: center;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #4C585B;
-  
-}
-
-.calculator {
-  display: inline-block;
-  border: 2px solid #4C585B;
-  padding: 30px;
-  border-radius: 10px;
-  margin-right:20px;
-  background-color: #4C585B;
-  -webkit-box-shadow: -5px 0px 42px 0px rgba(156,156,156,1);
-  -moz-box-shadow: -5px 0px 42px 0px rgba(156,156,156,1);
-  box-shadow: -5px 0px 42px 0px rgba(156,156,156,1);
-}
-
-.display input {
-  width: 400px;
-  height: 70px;
-  font-weight: bolder;
-  font-size: 2em;
-  text-align: right;
-  margin-bottom: 20px;
-  padding-right: 10px;
-  border-radius: 4px;
-  border: 1px solid #4C585B;
-  background-color: #f7f7f7;
-}
-
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-  background: #f7f7f7;
-  padding: 15px 15px;
-  border-radius: 5px;
-  background-color: #7E99A3;
-}
-
-button {
-  font-size: 1.1em;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  color: black;
-  background-color: #f7f7f7;
-  transition: 0.1s ease-in-out;
+  font-family: "Crimson Text", serif;  
 }
 
 
-button:hover {
-  background-color: #4C585B;
-  color: #fff;
+
+.result {
+  width: 185px;
+  margin-left: 50px;
 }
 
-.operator {
-  background-color: #A5BFCC;
-  color: black;
-}
-.history {
-  text-align: start;
-  padding: 40px;
-  min-width: 200px;
-  height: 60%;
+.clear {
+  width: 125px;
 }
 
-.history h6 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #fff;
+.minus, .plus, .divide, .multiply {
+  background-color: #EFB036;
 }
 
-.history li {
-  font-size: 25px;
-  color: #fff;
-}
 
-.historyBtn {
-  text-align: start;
-  margin-bottom: 20px;
-}
-
-.historyBtn button {
-  background-color: #A5BFCC;
-  border: none;
-  padding: 8px 16px;
-  color: #000;
-  font-size: 15px;
-  text-transform: lowercase;
-  letter-spacing: 1px;
-}
-
-.historyBtn button:hover {
-  background-color: #7E99A3;
-  color: #000;
-}
 
 </style>
