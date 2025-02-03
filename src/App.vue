@@ -49,7 +49,7 @@
     
         <div class="mt-30">
 
-          <p v-if="convertedAmount !== null" class="mb-3 text-gray-700 text-center">
+          <p v-if="convertedAmount !== null" class="mb-3 text-lg text-gray-700 text-center">
             Converted Amount: <strong>{{ convertedAmount }}</strong> {{ toCurrency }}
           </p>
           
@@ -174,7 +174,7 @@ export default {
     convertCurrency() {
       if (this.amount && this.fromCurrency && this.toCurrency) {
         let rate = this.exchangeRates[this.toCurrency] / this.exchangeRates[this.fromCurrency];
-        this.convertedAmount = (this.amount * rate).toFixed(2);
+        this.convertedAmount = (this.amount * rate).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       }
     },
 
