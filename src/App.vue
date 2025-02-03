@@ -17,20 +17,21 @@
                   @click="toggleCurrencyConverter" 
                   class="text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
                   currency
+                  <i class="fa-solid fa-hand-holding-dollar ml-2 text-sm"></i>
             </button>
         </div>
       </div>
       
       <!--History Modal-->
-      <div v-if="showHistory" class="fixed inset-0 flex items-center justify-center bg-transparent">
-        <div class="bg-white bg-opacity-80 backdrop:blur-md p-4 rounded-lg shadow-lg w-100 h-50 mt-80">
+      <div v-if="showHistory" class="fixed inset-0 flex items-center justify-center bg-[transparent]">
+        <div class="bg-[#021526] bg-opacity-80 backdrop:blur-md p-4 rounded-lg shadow-lg w-100 h-50 mt-80">
           <div class="flex justify-between items-center">
-            <h2 class="text-lg font-semibold">History</h2>
-            <button @click="toggleHistory" class="text-gray-500  hover:text-gray-700">✖</button>
+            <h2 class="text-lg text-white font-semibold">History</h2>
+            <button @click="toggleHistory" class="text-white  hover:text-gray-700">✖</button>
           </div>
           <div class="mt-3">
             <ul v-if="history.length">
-              <li v-for="(item, index) in history" :key="index" class="text-gray-700 mb-1">
+              <li v-for="(item, index) in history" :key="index" class="text-white mb-1">
                 {{ item }}
               </li>
             </ul>
@@ -41,15 +42,15 @@
 
       <!--Currency Converter Modal-->
       <div v-if="showCurrencyConverter" class="fixed inset-0 flex items-center justify-center bg-transparent">
-       <div class="bg-white bg-opacity-80 backdrop-blur-md p-4 rounded-2xl shadow-lg w-100 h-126.5">
+       <div class="bg-[#021526] bg-opacity-80 backdrop-blur-md p-4 rounded-2xl shadow-xl w-100 h-126.5">
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold">Currency Converter</h2>
-          <button @click="toggleCurrencyConverter" class="text-gray-500 hover:text-gray-700">✖</button>
+          <h2 class="text-lg text-white font-semibold">Currency Converter</h2>
+          <button @click="toggleCurrencyConverter" class="text-white hover:text-gray-300">✖</button>
         </div>
     
         <div class="mt-30">
 
-          <p v-if="convertedAmount !== null" class="mb-3 text-lg text-gray-700 text-center">
+          <p v-if="convertedAmount !== null" class="mb-3 text-lg text-white text-center">
             Converted Amount: <strong>{{ convertedAmount }}</strong> {{ toCurrency }}
           </p>
           
@@ -57,18 +58,18 @@
             v-model="amount" 
             type="number" 
             placeholder="Enter amount" 
-            class="w-full p-2 border rounded-lg text-gray-700">
+            class="w-full p-2 border rounded-lg text-white">
 
           <div class="flex flex-col justify-between mt-3">
-            <select v-model="fromCurrency" class="p-2 border rounded-lg w-ful mb-3">
+            <select v-model="fromCurrency" class="p-2 border rounded-lg bg-white border-white w-ful mb-3">
               <option v-for="(rate, currency) in exchangeRates" :key="currency" :value="currency">
                 {{ currency }}
               </option>
             </select>
 
-            <span class="text-center mb-2 mt-2"><i class="fa-solid fa-arrow-down-long"></i></span>
+            <span class="text-center text-white mb-2 mt-2 animate-bounce ..."><i class="fa-solid fa-arrow-down-long"></i></span>
 
-             <select v-model="toCurrency" class="p-2 border rounded-lg full">
+             <select v-model="toCurrency" class="p-2 border bg-white rounded-lg full">
                 <option v-for="(rate, currency) in exchangeRates" :key="currency" :value="currency">
                   {{ currency }}
                  </option>
