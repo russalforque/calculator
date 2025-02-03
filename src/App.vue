@@ -66,6 +66,8 @@
               </option>
             </select>
 
+            <span class="text-center mb-2 mt-2"><i class="fa-solid fa-arrow-down-long"></i></span>
+
              <select v-model="toCurrency" class="p-2 border rounded-lg full">
                 <option v-for="(rate, currency) in exchangeRates" :key="currency" :value="currency">
                   {{ currency }}
@@ -220,14 +222,17 @@ export default {
 
     calculateResult() {
       try {
+        const operation = this.displayValue;
         const result = eval(this.displayValue);
         this.displayValue = result.toString();
 
-        if (!isNaN(result) && result > 9999) {
+        if (!isNaN(result) && result > 999) {
           this.displayValue = result.toLocaleString();
+        } else {
+          this.displayValue = result.toString();
         }
 
-        this.history.push(`${this.displayValue}`);
+        this.history.push(`${operation} = ${this.displayValue}`);
 
         if (this.history.length > 5) {
           this.history.shift();
